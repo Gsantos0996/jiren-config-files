@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hope?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+
+endpoint:
+  benefits-platform: http://localhost:8180/api/v1/benefits-platform
+  customers-platform: http://localhost:8181/api/v1/customers-platform
+  benefits-discounts: http://localhost:8180/api/v2
+  iam: http://localhost:7180/v1
+  products-platform: http://localhost:9002/v1
+  catalogs-platform: http://localhost:7186/v1
+  banners-platform: http://localhost:7187/v1
+  banners: https://api.yayirobe.net:443/banners/v1
+
+trace:
+  response:
+    active: true
+
+impuesto:
+  pais: 0.18
+
+kafka:
+  bootstrap-servers: localhost:32500,localhost:32501
+  security-protocol: SASL_PLAINTEXT
+  sasl-mechanism: SCRAM-SHA-512
+  retry-interval: 10_000
+  retry-attempts: 1
+  topic:
+   # customers: CustomersTopic
+    products: ProductsTopic
+    users: UsersTopic
+
+s3:
+  path: https://katu-sandbox-assets-diadia-app.s3.amazonaws.com/diadia
+
+payment:
+  method:
+    waitingConfirmation: PAGO_CUOTAS

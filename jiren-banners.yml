@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: jiren-banners
+  jackson:
+    serialization:
+      indent-output: true
+  jpa:
+    show-sql: false
+    database: POSTGRESQL
+    properties:
+      hibernate.jdbc.lob.non_contextual_creation: true
+
+  servlet:
+    multipart:
+      max-file-size: 10485760
+
+server:
+  port: 7187
+  servlet:
+    context-path: /banners
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+    org.hibernate.SQL: DEBUG
+    org.springframework: ERROR
+    com.mkyong: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%t] %-5level ${spring.application.name:-} %X{traceId:-}  %logger{36} - %msg%n"
+    file: "%d %p %c{1.} [%t] %m%n"
+  file: /home/diadia/logs/jiren-banners.log
+
+management:
+  health:
+    defaults:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+banners:
+  aws:
+    access-key: ${S3_ACCESS_KEY}
+    secret-key: ${S3_SECRET_KEY}
+    endpoint: https://s3.amazonaws.com/
+    region: us-east-1
+    bucket-name: katu-sandbox-assets-insuma-app
+    url-obj: https://s3.amazonaws.com/katu-sandbox-assets-insuma-app/
+    customersTemplateDirectory: insuma/store_front/statics/images/banners/
+  web:
+    authorizationCookieName: auth-token
+    httpOnly: true
+    authorizationCookieAge: 3600
+    nonAuthenticatedUrls:
+      - /actuator/**
+      - /v2/api-docs**
+      - /v3/api-docs**
+      - /swagger-ui/**
+      - /swagger-resources**
+      - /swagger-resources/**
+      - /swagger-resources/configuration/**
+      - /v1/expired
+      - /v1/enable
+      - /v1/disabled
+    authenticatedUrlPattern: /**
+guid:
+  context: 17

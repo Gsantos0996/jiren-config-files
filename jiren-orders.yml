@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: jiren-orders
+  jackson:
+    serialization:
+      indent-output: true
+
+  jpa:
+    show-sql: false
+    database: POSTGRESQL
+    properties:
+      hibernate.jdbc.lob.non_contextual_creation: true
+
+  servlet:
+    multipart:
+      max-file-size: 10485760
+
+server:
+  port: 7185
+  servlet:
+    context-path: /orders
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+    org.hibernate.SQL: DEBUG
+    org.springframework: ERROR
+    com.mkyong: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%t] %-5level ${spring.application.name:-} %X{traceId:-}  %logger{36} - %msg%n"
+    file: "%d %p %c{1.} [%t] %m%n"
+  file: /home/diadia/logs/jiren-orders.log
+
+management:
+  health:
+    defaults:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+orders:
+  web:
+    authorizationCookieName: auth-token
+    httpOnly: true
+    authorizationCookieAge: 3600
+    nonAuthenticatedUrls:
+      - /actuator/**
+      - /v2/api-docs**
+      - /v3/api-docs**
+      - /swagger-ui/**
+      - /swagger-resources**
+      - /swagger-resources/**
+      - /swagger-resources/configuration/**
+    authenticatedUrlPattern: /**
+  batch:
+      createThreads: 8
+
+guid:
+  context: 12

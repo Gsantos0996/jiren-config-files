@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://databasehost:5432/hope?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 5
+
+endpoint:
+  benefits-platform: http://jiren-benefits:8180/api/v1/benefits-platform
+  customers-platform: http://jiren-benefits:7181/api/v1/customers-platform
+  benefits-discounts: https://biz.diadia.pe/api/v2
+  iam: https://biz.diadia.pe/v1
+  products-platform: http://jiren-products:7183/v1
+  catalogs-platform: http://jiren-catalog:7186/v1
+  banners-platform: http://jiren-banners:7187/v1
+  banners: https://api.yayirobe.net:443/banners/v1
+
+trace:
+  response:
+    active: true
+
+impuesto:
+  pais: 0.18
+
+kafka:
+  bootstrap-servers: b-1.mplus2-production-kafk.9w32z5.c6.kafka.us-east-2.amazonaws.com:9096,b-2.mplus2-production-kafk.9w32z5.c6.kafka.us-east-2.amazonaws.com:9096
+  security-protocol: SASL_SSL
+  sasl-mechanism: SCRAM-SHA-512
+  retry-interval: 180_000
+  retry-attempts: 3
+  topic:
+    customers: CustomersTopic
+    products: ProductsTopic
+    users: UsersTopic
+
+s3:
+  path: https://mplus2-production-assets-diadia-app.s3.us-east-2.amazonaws.com/diadia
+
+payment:
+  method:
+    waitingConfirmation: PAGO_CUOTAS

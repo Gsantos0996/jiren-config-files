@@ -1,0 +1,126 @@
+spring:
+  application:
+    name: jiren-bff
+  jackson:
+    serialization:
+      indent-output: true
+      WRITE_DATES_AS_TIMESTAMPS: false
+  servlet:
+    multipart:
+      max-file-size: 10485760
+
+server:
+  port: 7000
+  error:
+    include-message: always
+
+logging:
+  level:
+    com.jiren.flows.gateway.rest.client: DEBUG
+    org.zalando.logbook: TRACE
+    org.hibernate.SQL: DEBUG
+    org.springframework: ERROR
+    com.mkyong: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%t] %-5level ${spring.application.name:-} %X{traceId:-}  %logger{36} - %msg%n"
+    file: "%d %p %c{1.} [%t] %m%n"
+  file: /home/diadia/logs/jiren-bff.log
+
+management:
+  health:
+    defaults:
+      enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+services:
+  brand: RestBrandGateway
+  category: RestCategoryGateway
+  maker: RestMakerGateway
+  product: RestProductGateway
+  order: RestOrderGateway
+  cart: RestCartGateway
+  banner: RestBannerGateway
+  iam: RestIamGateway
+  customers: RestCustomersGateway
+
+rest:
+  product:
+    url: "http://jiren-products:7183"
+    base_url: "${rest.product.url}/v1"
+    home_id: "ALL"
+  brand:
+    url: "http://jiren-products:7183"
+    base_url: "${rest.brand.url}/v1"
+    home_id: "ALL"
+  maker:
+    url: "http://jiren-products:7183"
+    base_url: "${rest.maker.url}/v1"
+    home_id: "ALL"
+  catalog:
+    url: "http://jiren-catalog:7186"
+    base_url: "${rest.catalog.url}/v1"
+    home_id: "ALL"
+  cart:
+    url: "http://jiren-orders:7185"
+    base_url: "${rest.cart.url}/orders/v1"
+  order:
+    url: "http://jiren-orders:7185"
+    base_url: "${rest.order.url}/orders/v1"
+  banner:
+    url: "http://jiren-banners:7187"
+    base_url: "${rest.banner.url}/banners/v1"
+  iam:
+    url: "https://api.yayirobe.net"
+    base_url: "${rest.iam.url}/iam/v1"
+  benefits:
+    url: "http://jiren-new-benefits:7188"
+    base_url: "${rest.benefits.url}/v1/promotions/discounts"
+    customer_base_url: "${rest.benefits.url}/v1/customers/promotions/discounts"
+    coupon_base_url: "${rest.benefits.url}/v1/promotions/coupons"
+  customers:
+    url: "http://jiren-customers:7181"
+    base_url: "${rest.customers.url}/customers/v1"
+
+test:
+  auth:
+    client_id: "diadia.com"
+    authorized_user: "123345|123dsd|antonio@insuma.com|USER,ADMIN"
+    customer_id: "77Jpj0Ip99"
+    user_id: "DNI_42032492"
+
+bff:
+  web:
+    authorizationCookieName: auth-token
+    httpOnly: true
+    authorizationCookieAge: 3600
+    nonAuthenticatedUrls:
+      - /actuator/**
+      - /v2/api-docs**
+      - /v3/api-docs**
+      - /swagger-ui/**
+      - /swagger-resources**
+      - /swagger-resources/**
+      - /swagger-resources/configuration/**
+      - /iam/v1/authentication/signIn
+      - /iam/v1/users/signUp
+      - /iam/v1/password/{\\w+}/forgot
+      - /iam/v1/password/reset
+      - /iam/v1/token/refresh
+      - /v1/health
+      - /error
+      - /
+      - /customers/v1/check-user
+      - /customers/v1/documents
+      
+    authenticatedUrlPattern: /**
+
+feign:
+  okhttp:
+    enabled: true
+
+guid:
+  context: 20
